@@ -1,0 +1,5 @@
+npm error code ETARGET
+npm error notarget No matching version found for @supabase/cli@2.101.0.
+npm error notarget In most cases you or one of your dependencies are requesting
+npm error notarget a package version that doesn't exist.
+npm error A complete log of this run can be found in: C:\Users\stephan\AppData\Local\npm-cache\_logs\2026-07-08T16_58_11_437Z-debug-0.log
