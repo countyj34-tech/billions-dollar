@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import logo from "@/assets/logo.png";
 import { useSiteOverrides } from "@/lib/site-store";
 import { resolveBrand, resolveNavItems } from "@/lib/site-content";
@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const logoTapCount = useRef(0);
+  const lastLogoTapAt = useRef(0);
   const [overrides] = useSiteOverrides();
   const navigate = useNavigate();
   const brand = resolveBrand(overrides);
@@ -16,26 +18,17 @@ export function SiteHeader() {
 
   function onLogoClick(e: React.MouseEvent) {
     const now = Date.now();
-    let count = 0;
-    let t = 0;
-    try {
-      const raw = sessionStorage.getItem("bet_logo_taps");
-      if (raw) {
-        const p = JSON.parse(raw);
-        count = p.count || 0;
-        t = p.t || 0;
-      }
-    } catch {}
-    if (now - t > 1500) count = 0;
-    count += 1;
-    sessionStorage.setItem("bet_logo_taps", JSON.stringify({ count, t: now }));
+    if (now - lastLogoTapAt.current > 4000) logoTapCount.current = 0;
+    logoTapCount.current += 1;
+    lastLogoTapAt.current = now;
+    const count = logoTapCount.current;
     if (count >= 5) {
       e.preventDefault();
-      sessionStorage.removeItem("bet_logo_taps");
-      supabase.auth.getUser().then(({ data }) => {
-        if (data.user) navigate({ to: "/admin" });
-        else navigate({ to: "/admin-login" });
-      });
+      logoTapCount.current = 0;
+      supabase.auth
+        .getUser()
+        .then(({ data }) => navigate({ to: data.user ? "/admin" : "/admin-login" }))
+        .catch(() => navigate({ to: "/admin-login" }));
     }
   }
 
