@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { COMPANY_EMAIL } from "@/lib/company";
 import { ensureCompanyAdminRole, isCompanyAdminEmail } from "@/lib/admin-auth";
 
@@ -261,6 +261,11 @@ function applyLocalFallback(base: SiteOverrides): SiteOverrides {
 }
 
 export async function loadFromDb() {
+  if (!isSupabaseConfigured()) {
+    cache = applyLocalFallback({ ...cache, posts: cache.posts });
+    loaded = true;
+    return;
+  }
   if (loading) return loading;
   loading = (async () => {
     try {
@@ -291,11 +296,13 @@ export async function loadFromDb() {
 
 if (typeof window !== "undefined") {
   loadFromDb();
-  supabase
-    .channel("site-store")
-    .on("postgres_changes", { event: "*", schema: "public", table: "site_settings" }, () => loadFromDb())
-    .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => loadFromDb())
-    .subscribe();
+  if (isSupabaseConfigured()) {
+    supabase
+      .channel("site-store")
+      .on("postgres_changes", { event: "*", schema: "public", table: "site_settings" }, () => loadFromDb())
+      .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => loadFromDb())
+      .subscribe();
+  }
 }
 
 export function useSiteOverrides() {
