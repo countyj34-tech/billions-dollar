@@ -6,6 +6,11 @@
   NODE_VERSION = "22.12.0"
   SECRETS_SCAN_OMIT_KEYS = "SUPABASE_PROJECT_ID,SUPABASE_PUBLISHABLE_KEYS,VITE_SUPABASE_PROJECT_ID,VITE_SUPABASE_URL,VITE_SUPABASE_PUBLISHABLE_KEY,SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY"
 
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions-internal/server"
+  status = 200
+
 [[notifications]]
   for = "booking-inquiry"
   email = "besteasterntravel@yahoo.com"
