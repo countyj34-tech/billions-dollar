@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 import logo from "@/assets/logo.png";
 import { useSiteOverrides } from "@/lib/site-store";
 import { resolveBrand, resolveNavItems } from "@/lib/site-content";
-import { supabase } from "@/integrations/supabase/client";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -25,10 +24,7 @@ export function SiteHeader() {
     if (count >= 5) {
       e.preventDefault();
       logoTapCount.current = 0;
-      supabase.auth
-        .getUser()
-        .then(({ data }) => navigate({ to: data.user ? "/admin" : "/admin-login" }))
-        .catch(() => navigate({ to: "/admin-login" }));
+      navigate({ to: "/admin" });
     }
   }
 
