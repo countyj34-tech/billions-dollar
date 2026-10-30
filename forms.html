@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Forms</title>
+  </head>
+  <body>
+    <form name="booking-inquiry" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="phone" />
+      <input type="text" name="preferred_contact" />
+      <input type="text" name="services" />
+      <input type="text" name="from" />
+      <input type="text" name="destination" />
+      <input type="text" name="departure" />
+      <input type="text" name="return" />
+      <input type="text" name="adults" />
+      <input type="text" name="children" />
+      <input type="text" name="cabin" />
+      <input type="text" name="hotel" />
+      <input type="text" name="vehicle" />
+      <input type="text" name="driver" />
+      <input type="text" name="package_tier" />
+      <textarea name="notes"></textarea>
+      <textarea name="summary"></textarea>
+      <input type="hidden" name="form-name" value="booking-inquiry" />
+    </form>
+    <form name="contact-inquiry" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="phone" />
+      <input type="text" name="subject" />
+      <textarea name="message"></textarea>
+      <textarea name="summary"></textarea>
+      <input type="hidden" name="form-name" value="contact-inquiry" />
+    </form>
+  </body>
+</html>
