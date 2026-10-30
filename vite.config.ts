@@ -5,6 +5,15 @@
 //     error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { loadEnv } from "vite";
+
+const buildEnv = loadEnv("production", process.cwd(), "");
+const supabaseUrl = buildEnv.VITE_SUPABASE_URL || buildEnv.SUPABASE_URL || "";
+const supabasePublishableKey =
+  buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  buildEnv.SUPABASE_PUBLISHABLE_KEY ||
+  buildEnv.SUPABASE_PUBLISHABLE_KEYS ||
+  "";
 
 export default defineConfig({
   react: {
@@ -22,6 +31,10 @@ export default defineConfig({
     preset: "netlify",
   },
   vite: {
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(supabaseUrl),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(supabasePublishableKey),
+    },
     oxc: {
       jsx: {
         development: false,
