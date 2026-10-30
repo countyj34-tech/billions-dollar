@@ -7,6 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  react: {
+    babel: {
+      development: false,
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     server: { entry: "server" },
@@ -17,6 +22,11 @@ export default defineConfig({
     preset: "netlify",
   },
   vite: {
+    oxc: {
+      jsx: {
+        development: false,
+      },
+    },
     ssr: {
       external: ["nodemailer"],
     },
